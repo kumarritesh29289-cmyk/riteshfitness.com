@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ritesh Fitness Club | Transform Your Limits</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Syne & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#08090b',
+                        darkCard: 'rgba(18, 20, 26, 0.75)',
+                        gold: '#ffb703',
+                        cyanNeon: '#00f5d4',
+                        goldGlow: 'rgba(255, 183, 3, 0.25)',
+                        cyanGlow: 'rgba(0, 245, 212, 0.25)',
+                    },
+                    fontFamily: {
+                        syne: ['Syne', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #08090b;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-syne {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(18, 20, 28, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(8, 9, 11, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Glow Effects */
+        .glow-gold-hover:hover {
+            box-shadow: 0 0 25px rgba(255, 183, 3, 0.4);
+            border-color: #ffb703;
+        }
+
+        .glow-cyan-hover:hover {
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.4);
+            border-color: #00f5d4;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #ffb703 0%, #ffe89e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #00f5d4 0%, #9bf8eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Page Transitions */
+        .page-view {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .page-view.hidden {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08090b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2430;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffb703;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <button onclick="switchPage('home')" class="flex items-center gap-3 group text-left">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-gold to-yellow-600 flex items-center justify-center text-black font-extrabold text-xl shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-syne text-xl font-extrabold tracking-wider text-white">RITESH <span class="text-gold">FITNESS</span></span>
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold">CLUB & GYM</span>
+                    </div>
+                </button>
+
+                <!-- Page Switcher Tabs (Desktop) -->
+                <div class="hidden md:flex items-center p-1.5 rounded-full bg-black/60 border border-gray-800">
+                    <button id="nav-btn-home" onclick="switchPage('home')" class="px-6 py-2 rounded-full text-sm font-bold transition-all bg-gold text-black shadow-md">
+                        <i class="fa-solid fa-house mr-2"></i>Home Page
+                    </button>
+                    <button id="nav-btn-hub" onclick="switchPage('hub')" class="px-6 py-2 rounded-full text-sm font-bold text-gray-300 hover:text-white transition-all">
+                        <i class="fa-solid fa-fire mr-2"></i>Fitness Hub & Booking
+                    </button>
+                </div>
+
+                <!-- Action Button & Mobile Menu -->
+                <div class="flex items-center gap-3">
+                    <button onclick="switchPage('hub'); scrollToSection('membership-section')" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gold hover:bg-yellow-400 text-black font-extrabold text-sm transition-all shadow-[0_0_15px_rgba(255,183,3,0.3)] hover:scale-105">
+                        <span>Join Club</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                    
+                    <button id="mobile-menu-btn" class="md:hidden text-2xl text-gray-300 hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-800/80 bg-darkBg/95 backdrop-blur-xl px-6 py-6 space-y-4">
+            <button onclick="switchPage('home')" class="mobile-link block w-full text-left text-lg font-bold text-gray-200 hover:text-gold py-2">
+                <i class="fa-solid fa-house mr-3 text-gold"></i>Home Page
+            </button>
+            <button onclick="switchPage('hub')" class="mobile-link block w-full text-left text-lg font-bold text-gray-200 hover:text-gold py-2">
+                <i class="fa-solid fa-calculator mr-3 text-cyanNeon"></i>BMI & Training Hub
+            </button>
+            <button onclick="switchPage('hub'); scrollToSection('membership-section')" class="mobile-link block w-full text-left text-lg font-bold text-gray-200 hover:text-gold py-2">
+                <i class="fa-solid fa-id-card mr-3 text-gold"></i>Membership Plans
+            </button>
+            <button onclick="switchPage('hub'); scrollToSection('contact-section')" class="mobile-link block w-full text-left text-lg font-bold text-gray-200 hover:text-gold py-2">
+                <i class="fa-solid fa-envelope mr-3 text-cyanNeon"></i>Contact & Address
+            </button>
+            <button onclick="switchPage('hub'); scrollToSection('membership-section')" class="block text-center w-full py-3.5 bg-gold text-black font-extrabold rounded-xl shadow-lg">
+                Join Now
+            </button>
+        </div>
+    </nav>
+
+    <!-- PAGE 1: HOME PAGE -->
+    <main id="page-home" class="page-view pt-20">
+        <!-- Hero Section -->
+        <section class="relative min-h-[90vh] flex items-center py-16 overflow-hidden">
+            <!-- Glowing Background Orbs -->
+            <div class="absolute top-1/4 left-10 w-96 h-96 bg-gold/10 rounded-full blur-[130px] pointer-events-none"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyanNeon/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+                <div class="lg:col-span-7 space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-gold/30 text-gold text-xs sm:text-sm font-semibold tracking-wide">
+                        <span class="w-2.5 h-2.5 rounded-full bg-gold animate-pulse"></span>
+                        KAITHIPURVA, NAYAGAON, HARDOI ROAD
+                    </div>
+                    
+                    <h1 class="font-syne text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-tight leading-none text-white">
+                        TRANSFORM YOUR <span class="text-gradient-gold">LIMITS</span> AT RITESH FITNESS CLUB.
+                    </h1>
+                    
+                    <p class="text-gray-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        Step into Hardoi Road's premier gym destination. State-of-the-art strength machinery, cardio decks, personalized transformation programs, and certified personal trainers ready to guide your journey.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchPage('hub')" class="px-8 py-4 rounded-xl bg-gold hover:bg-yellow-400 text-black font-extrabold text-base transition-all duration-300 shadow-[0_0_20px_rgba(255,183,3,0.3)] hover:scale-105 flex items-center gap-3">
+                            <span>Explore Hub & Plans</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </button>
+                        <a href="tel:+919559088924" class="px-8 py-4 rounded-xl glass-card text-white hover:text-gold font-bold text-base border border-gray-700 hover:border-gold transition-all duration-300 flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-gold"></i>
+                            <span>Call +91 9559088924</span>
+                        </a>
+                    </div>
+
+                    <!-- Counter Stats -->
+                    <div class="grid grid-cols-3 gap-4 pt-8 border-t border-gray-800/80">
+                        <div>
+                            <p class="font-syne text-3xl sm:text-4xl font-extrabold text-white"><span class="counter" data-target="500">0</span>+</p>
+                            <p class="text-xs sm:text-sm text-gray-400 font-medium">Active Members</p>
+                        </div>
+                        <div>
+                            <p class="font-syne text-3xl sm:text-4xl font-extrabold text-gold"><span class="counter" data-target="15">0</span>+</p>
+                            <p class="text-xs sm:text-sm text-gray-400 font-medium">Certified Trainers</p>
+                        </div>
+                        <div>
+                            <p class="font-syne text-3xl sm:text-4xl font-extrabold text-cyanNeon">24/7</p>
+                            <p class="text-xs sm:text-sm text-gray-400 font-medium">Club Access</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Card -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-3xl overflow-hidden glass-card p-3 border border-gray-800 group">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Ritesh Fitness Club Facility" 
+                             class="w-full h-[450px] sm:h-[520px] object-cover rounded-2xl filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        
+                        <!-- Location Overlay -->
+                        <div class="absolute bottom-6 left-6 right-6 glass-card p-4 rounded-2xl border border-gold/30 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center text-gold text-lg">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-xs sm:text-sm">Kaithipurva, Nayagaon</h4>
+                                    <p class="text-[11px] text-gray-400">Hardoi Road Location</p>
+                                </div>
+                            </div>
+                            <a href="https://instagram.com/_ritesh_x97" target="_blank" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center text-lg hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlights & Facilities -->
+        <section class="py-20 bg-darkBg/60 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                    <h2 class="text-gold font-bold text-xs tracking-widest uppercase">Club Features</h2>
+                    <h3 class="font-syne text-3xl sm:text-5xl font-extrabold text-white">THE RITESH FITNESS ADVANTAGE</h3>
+                    <p class="text-gray-400 text-sm sm:text-base">We provide a world-class training environment designed to help you build strength, burn body fat, and elevate endurance.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 rounded-3xl border border-gray-800 hover:border-gold/50 transition-all duration-300 glow-gold-hover group">
+                        <div class="w-14 h-14 rounded-2xl bg-gold/10 text-gold flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <h4 class="font-syne text-xl font-bold text-white mb-3">Modern Gym Equipment</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Complete set of power racks, cable crossovers, heavy dumbbells, and cardio machines for all fitness goals.</p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 rounded-3xl border border-gray-800 hover:border-cyanNeon/50 transition-all duration-300 glow-cyan-hover group">
+                        <div class="w-14 h-14 rounded-2xl bg-cyanNeon/10 text-cyanNeon flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-ninja"></i>
+                        </div>
+                        <h4 class="font-syne text-xl font-bold text-white mb-3">Personalized Mentorship</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Direct guidance from expert trainers with tailored diet plans, workout schedules, and form correction.</p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 rounded-3xl border border-gray-800 hover:border-gold/50 transition-all duration-300 glow-gold-hover group">
+                        <div class="w-14 h-14 rounded-2xl bg-gold/10 text-gold flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <h4 class="font-syne text-xl font-bold text-white mb-3">Motivating Environment</h4>
+                        <p class="text-gray-400 text-sm leading-relaxed">Train alongside a dedicated community that inspires you to push past limits every single day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Direct CTA Banner -->
+        <section class="py-16 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-3xl p-8 sm:p-12 border border-gold/40 relative overflow-hidden bg-gradient-to-r from-black via-gray-900 to-black flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div class="space-y-4 max-w-2xl text-center md:text-left">
+                        <span class="text-gold font-bold text-xs uppercase tracking-widest">Special Enrollment Offer</span>
+                        <h3 class="font-syne text-3xl sm:text-4xl font-extrabold text-white">READY TO BEGIN YOUR FIT LIFE?</h3>
+                        <p class="text-gray-400 text-sm">Calculate your BMI, select your membership plan, or book a free trial session in our Interactive Fitness Hub.</p>
+                    </div>
+                    <button onclick="switchPage('hub')" class="px-8 py-4 rounded-xl bg-gold text-black font-extrabold hover:bg-yellow-400 transition-all shadow-[0_0_20px_rgba(255,183,3,0.3)] shrink-0">
+                        Open Fitness Hub & Booking <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PAGE 2: FITNESS HUB & BOOKING PAGE -->
+    <main id="page-hub" class="page-view hidden pt-28 pb-20">
+        
+        <!-- Hub Page Header Banner -->
+        <section class="mb-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+                <span class="text-cyanNeon font-bold text-xs tracking-widest uppercase">Page 2: Interactive Fitness Hub</span>
+                <h1 class="font-syne text-4xl sm:text-6xl font-extrabold text-white">CALCULATE, PLAN & <span class="text-gradient-cyan">BOOK</span></h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    Use our live health tools, filter workout programs, choose a membership tier, or send an inquiry directly to Ritesh Fitness Club.
+                </p>
+            </div>
+        </section>
+
+        <!-- Interactive BMI Calculator Tool -->
+        <section id="bmi-section" class="mb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-card rounded-3xl p-8 sm:p-12 border border-gray-800">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        
+                        <div class="lg:col-span-6 space-y-6">
+                            <span class="text-gold font-bold text-xs tracking-widest uppercase"><i class="fa-solid fa-calculator mr-2"></i>Live Health Metric</span>
+                            <h2 class="font-syne text-3xl sm:text-4xl font-extrabold text-white">CALCULATE YOUR <span class="text-gradient-gold">BMI</span></h2>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Body Mass Index (BMI) evaluates your weight relative to your height. Input your stats below to receive personalized training advice.
+                            </p>
+
+                            <form id="bmi-form" class="space-y-4 pt-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Height (cm)</label>
+                                        <input type="number" id="bmi-height" placeholder="e.g., 175" required
+                                               class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Weight (kg)</label>
+                                        <input type="number" id="bmi-weight" placeholder="e.g., 70" required
+                                               class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full py-3.5 bg-gold text-black font-extrabold rounded-xl shadow-[0_0_20px_rgba(255,183,3,0.3)] hover:bg-yellow-400 transition-all">
+                                    Calculate BMI
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- BMI Output Card -->
+                        <div class="lg:col-span-6 flex flex-col items-center justify-center p-8 rounded-2xl bg-black/60 border border-gray-800 text-center min-h-[300px]">
+                            <div id="bmi-initial" class="space-y-3">
+                                <i class="fa-solid fa-heart-pulse text-5xl text-gray-600"></i>
+                                <p class="text-gray-400 text-sm">Enter your height & weight to view score</p>
+                            </div>
+
+                            <div id="bmi-result" class="hidden w-full space-y-4">
+                                <p class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Calculated BMI Score</p>
+                                <div id="bmi-score" class="font-syne text-6xl font-extrabold text-gold">0.0</div>
+                                <div id="bmi-badge" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-gray-800 text-white">
+                                    Category
+                                </div>
+                                <p id="bmi-advice" class="text-xs text-gray-300 max-w-md mx-auto pt-2 leading-relaxed">
+                                    Fitness recommendation will show here.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Classes Filter Section -->
+        <section id="classes-section" class="mb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                    <h2 class="text-gold font-bold text-xs tracking-widest uppercase">Workout Programs</h2>
+                    <h3 class="font-syne text-3xl sm:text-4xl font-extrabold text-white">EXPLORE OUR CLASSES</h3>
+                    <p class="text-gray-400 text-sm">Filter through our training categories tailored for all fitness levels.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button class="class-filter-btn active px-6 py-2.5 rounded-full text-sm font-bold bg-gold text-black transition-all" data-filter="all">All Programs</button>
+                    <button class="class-filter-btn px-6 py-2.5 rounded-full text-sm font-bold glass-card text-gray-300 hover:text-white border border-gray-700 transition-all" data-filter="strength">Strength & Weights</button>
+                    <button class="class-filter-btn px-6 py-2.5 rounded-full text-sm font-bold glass-card text-gray-300 hover:text-white border border-gray-700 transition-all" data-filter="cardio">Cardio & Burn</button>
+                    <button class="class-filter-btn px-6 py-2.5 rounded-full text-sm font-bold glass-card text-gray-300 hover:text-white border border-gray-700 transition-all" data-filter="crossfit">Crossfit</button>
+                </div>
+
+                <!-- Class Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Class 1 -->
+                    <div class="class-item glass-card rounded-3xl overflow-hidden border border-gray-800" data-category="strength">
+                        <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop" alt="Heavy Weight Training" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-gold uppercase tracking-wider">Strength</span>
+                                <span class="text-xs text-gray-400"><i class="fa-regular fa-clock text-gold"></i> 60 Mins</span>
+                            </div>
+                            <h4 class="font-syne text-xl font-bold text-white">Heavy Powerlifting</h4>
+                            <p class="text-gray-400 text-xs leading-relaxed">Compound barbell deadlifts, bench press, squats under trainer supervision.</p>
+                        </div>
+                    </div>
+
+                    <!-- Class 2 -->
+                    <div class="class-item glass-card rounded-3xl overflow-hidden border border-gray-800" data-category="cardio">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop" alt="Cardio HIIT" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-cyanNeon uppercase tracking-wider">Cardio</span>
+                                <span class="text-xs text-gray-400"><i class="fa-regular fa-clock text-cyanNeon"></i> 45 Mins</span>
+                            </div>
+                            <h4 class="font-syne text-xl font-bold text-white">Extreme HIIT Burn</h4>
+                            <p class="text-gray-400 text-xs leading-relaxed">High-energy metabolic workouts to accelerate fat burning and endurance.</p>
+                        </div>
+                    </div>
+
+                    <!-- Class 3 -->
+                    <div class="class-item glass-card rounded-3xl overflow-hidden border border-gray-800" data-category="crossfit">
+                        <img src="https://images.unsplash.com/photo-1533681904393-9ab6eee7e20c?q=80&w=600&auto=format&fit=crop" alt="Crossfit" class="w-full h-48 object-cover">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-gold uppercase tracking-wider">Crossfit</span>
+                                <span class="text-xs text-gray-400"><i class="fa-regular fa-clock text-gold"></i> 50 Mins</span>
+                            </div>
+                            <h4 class="font-syne text-xl font-bold text-white">Functional Crossfit WOD</h4>
+                            <p class="text-gray-400 text-xs leading-relaxed">Dynamic movements, kettlebell routines, and stamina building circuits.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Membership Selector Section -->
+        <section id="membership-section" class="mb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+                    <h2 class="text-gold font-bold text-xs tracking-widest uppercase">Pricing Plans</h2>
+                    <h3 class="font-syne text-3xl sm:text-4xl font-extrabold text-white">MEMBERSHIP TIERS</h3>
+                    <p class="text-gray-400 text-sm">Choose a plan that fits your personal fitness journey.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+                    <!-- Basic Tier -->
+                    <div class="glass-card rounded-3xl p-8 border border-gray-800 flex flex-col justify-between hover:border-gray-700 transition-all">
+                        <div class="space-y-6">
+                            <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Basic Tier</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="font-syne text-4xl font-extrabold text-white">₹1,499</span>
+                                <span class="text-gray-400 text-xs">/ month</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Full Gym Floor Access</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Free Locker Room Facility</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Cardio Deck & Free Weights</li>
+                                <li class="flex items-center gap-3 text-gray-500 line-through"><i class="fa-solid fa-xmark"></i> Personal Trainer</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Basic Tier - ₹1,499/mo')" class="w-full mt-8 py-3.5 rounded-xl border border-gold text-gold hover:bg-gold hover:text-black font-bold transition-all">
+                            Select Basic Plan
+                        </button>
+                    </div>
+
+                    <!-- Pro Plan (Featured) -->
+                    <div class="glass-card rounded-3xl p-8 border-2 border-gold relative flex flex-col justify-between shadow-[0_0_30px_rgba(255,183,3,0.15)] bg-black/80">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gold text-black text-[11px] font-extrabold rounded-full uppercase tracking-wider">
+                            Most Popular
+                        </div>
+                        <div class="space-y-6">
+                            <span class="text-xs font-bold uppercase tracking-widest text-gold">Pro Transformation</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="font-syne text-5xl font-extrabold text-white">₹2,999</span>
+                                <span class="text-gray-400 text-xs">/ month</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-gray-200">
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Full Gym Floor & Cardio Access</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> 8 Personal Trainer Sessions</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Personalized Diet & Meal Plan</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-gold"></i> Steam & Sauna Access</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Pro Plan - ₹2,999/mo')" class="w-full mt-8 py-3.5 rounded-xl bg-gold text-black font-extrabold hover:bg-yellow-400 shadow-lg transition-all">
+                            Choose Pro Plan
+                        </button>
+                    </div>
+
+                    <!-- Elite VIP Plan -->
+                    <div class="glass-card rounded-3xl p-8 border border-gray-800 flex flex-col justify-between hover:border-cyanNeon/50 transition-all">
+                        <div class="space-y-6">
+                            <span class="text-xs font-bold uppercase tracking-widest text-cyanNeon">Elite VIP</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="font-syne text-4xl font-extrabold text-white">₹4,999</span>
+                                <span class="text-gray-400 text-xs">/ month</span>
+                            </div>
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanNeon"></i> Dedicated Personal Trainer</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanNeon"></i> Custom Supplementation Guide</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanNeon"></i> Priority 24/7 Club Access</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-check text-cyanNeon"></i> 2 Free Guest Passes / Mo</li>
+                            </ul>
+                        </div>
+                        <button onclick="selectPlan('Elite VIP - ₹4,999/mo')" class="w-full mt-8 py-3.5 rounded-xl border border-cyanNeon text-cyanNeon hover:bg-cyanNeon hover:text-black font-bold transition-all">
+                            Select VIP Plan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Contact & Booking Section -->
+        <section id="contact-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    
+                    <!-- Official Address & Details -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div>
+                            <span class="text-gold font-bold text-xs tracking-widest uppercase">Contact Details</span>
+                            <h2 class="font-syne text-3xl font-extrabold text-white mt-2">RITESH FITNESS CLUB</h2>
+                            <p class="text-gray-400 text-sm mt-2">Get in touch with us or visit our gym facility in Nayagaon.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Address -->
+                            <div class="flex items-start gap-4 glass-card p-4 rounded-2xl border border-gray-800">
+                                <div class="w-11 h-11 rounded-xl bg-gold/10 text-gold flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Gym Address</h4>
+                                    <p class="text-xs text-gray-400 mt-1">Kaithipurva, Nayagaon, Hardoi Road</p>
+                                </div>
+                            </div>
+
+                            <!-- Mobile -->
+                            <a href="tel:+919559088924" class="flex items-start gap-4 glass-card p-4 rounded-2xl border border-gray-800 hover:border-gold transition-colors block">
+                                <div class="w-11 h-11 rounded-xl bg-gold/10 text-gold flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Mobile Number</h4>
+                                    <p class="text-xs text-gray-400 mt-1">+91 9559088924</p>
+                                </div>
+                            </a>
+
+                            <!-- Email -->
+                            <a href="mailto:kumarritesh29289@gmail.com" class="flex items-start gap-4 glass-card p-4 rounded-2xl border border-gray-800 hover:border-gold transition-colors block">
+                                <div class="w-11 h-11 rounded-xl bg-gold/10 text-gold flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Email Address</h4>
+                                    <p class="text-xs text-gray-400 mt-1">kumarritesh29289@gmail.com</p>
+                                </div>
+                            </a>
+
+                            <!-- Instagram -->
+                            <a href="https://instagram.com/_ritesh_x97" target="_blank" class="flex items-start gap-4 glass-card p-4 rounded-2xl border border-gray-800 hover:border-cyanNeon transition-colors block">
+                                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Instagram Profile</h4>
+                                    <p class="text-xs text-gray-400 mt-1">@_ritesh_x97</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Form Card -->
+                    <div class="lg:col-span-7 glass-card p-8 sm:p-10 rounded-3xl border border-gray-800">
+                        <h3 class="font-syne text-2xl font-bold text-white mb-6">Book Session / Send Inquiry</h3>
+                        
+                        <form id="contact-form" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Full Name</label>
+                                    <input type="text" id="form-name" required placeholder="Enter your full name"
+                                           class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Mobile Number</label>
+                                    <input type="tel" id="form-phone" required placeholder="e.g., 9559088924"
+                                           class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Email Address</label>
+                                    <input type="email" id="form-email" required placeholder="kumarritesh29289@gmail.com"
+                                           class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Interested Plan</label>
+                                    <select id="form-plan" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors">
+                                        <option value="General Inquiry">General Inquiry / Free Trial</option>
+                                        <option value="Basic Tier - ₹1,499/mo">Basic Tier - ₹1,499/mo</option>
+                                        <option value="Pro Plan - ₹2,999/mo">Pro Plan - ₹2,999/mo</option>
+                                        <option value="Elite VIP - ₹4,999/mo">Elite VIP - ₹4,999/mo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-400 mb-2">Message or Goal</label>
+                                <textarea id="form-message" rows="4" placeholder="Mention your weight loss, muscle building, or fitness targets..."
+                                          class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gold transition-colors"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-gold hover:bg-yellow-400 text-black font-extrabold rounded-xl shadow-[0_0_20px_rgba(255,183,3,0.3)] transition-all">
+                                Submit Inquiry Now
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-black py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gold flex items-center justify-center text-black font-extrabold text-sm">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <span class="font-syne text-lg font-extrabold text-white">RITESH <span class="text-gold">FITNESS</span> CLUB</span>
+                </div>
+
+                <div class="text-xs text-gray-400 text-center">
+                    Kaithipurva, Nayagaon, Hardoi Road | Phone: <a href="tel:+919559088924" class="hover:text-gold">+91 9559088924</a>
+                </div>
+
+                <!-- Socials -->
+                <div class="flex items-center gap-4">
+                    <a href="https://instagram.com/_ritesh_x97" target="_blank" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:text-gold flex items-center justify-center transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="mailto:kumarritesh29289@gmail.com" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:text-gold flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                    <a href="tel:+919559088924" class="w-9 h-9 rounded-full bg-gray-800 text-gray-300 hover:text-gold flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-phone"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-xs text-gray-600 border-t border-gray-900 pt-6">
+                © <span id="year"></span> Ritesh Fitness Club. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 glass-card border border-gold p-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm">
+        <div class="w-10 h-10 rounded-xl bg-gold/20 text-gold flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <h5 id="toast-title" class="font-bold text-white text-sm">Success!</h5>
+            <p id="toast-msg" class="text-xs text-gray-300">Inquiry submitted successfully.</p>
+        </div>
+    </div>
+
+    <script>
+        // Set dynamic current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Single Page Navigation / Page Switcher Logic
+        function switchPage(pageId) {
+            const homePage = document.getElementById('page-home');
+            const hubPage = document.getElementById('page-hub');
+            const navBtnHome = document.getElementById('nav-btn-home');
+            const navBtnHub = document.getElementById('nav-btn-hub');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Close mobile menu if open
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+
+            if (pageId === 'home') {
+                homePage.classList.remove('hidden');
+                hubPage.classList.add('hidden');
+
+                navBtnHome.className = "px-6 py-2 rounded-full text-sm font-bold transition-all bg-gold text-black shadow-md";
+                navBtnHub.className = "px-6 py-2 rounded-full text-sm font-bold text-gray-300 hover:text-white transition-all";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (pageId === 'hub') {
+                hubPage.classList.remove('hidden');
+                homePage.classList.add('hidden');
+
+                navBtnHub.className = "px-6 py-2 rounded-full text-sm font-bold transition-all bg-gold text-black shadow-md";
+                navBtnHome.className = "px-6 py-2 rounded-full text-sm font-bold text-gray-300 hover:text-white transition-all";
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Helper function for scrolling to specific sections within Hub page
+        function scrollToSection(sectionId) {
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }
+
+        // Mobile Menu Button Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        let animated = false;
+
+        window.addEventListener('scroll', () => {
+            const heroStats = document.querySelector('.counter');
+            if (heroStats && window.scrollY + window.innerHeight > heroStats.offsetTop && !animated) {
+                animated = true;
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    let count = 0;
+                    const speed = target / 30;
+                    const updateCount = () => {
+                        count += speed;
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count);
+                            setTimeout(updateCount, 40);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            }
+        });
+
+        // BMI Calculator Logic
+        const bmiForm = document.getElementById('bmi-form');
+        const bmiInitial = document.getElementById('bmi-initial');
+        const bmiResult = document.getElementById('bmi-result');
+        const bmiScore = document.getElementById('bmi-score');
+        const bmiBadge = document.getElementById('bmi-badge');
+        const bmiAdvice = document.getElementById('bmi-advice');
+
+        bmiForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const height = parseFloat(document.getElementById('bmi-height').value) / 100;
+            const weight = parseFloat(document.getElementById('bmi-weight').value);
+
+            if (height > 0 && weight > 0) {
+                const bmi = (weight / (height * height)).toFixed(1);
+                bmiInitial.classList.add('hidden');
+                bmiResult.classList.remove('hidden');
+                bmiScore.textContent = bmi;
+
+                if (bmi < 18.5) {
+                    bmiBadge.textContent = "Underweight";
+                    bmiBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase bg-yellow-500/20 text-yellow-400 border border-yellow-500/40";
+                    bmiAdvice.textContent = "Recommended: Muscle gaining program with caloric surplus guidance at Ritesh Fitness Club.";
+                } else if (bmi >= 18.5 && bmi < 24.9) {
+                    bmiBadge.textContent = "Normal Weight";
+                    bmiBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase bg-cyanNeon/20 text-cyanNeon border border-cyanNeon/40";
+                    bmiAdvice.textContent = "Great condition! Maintain your athletic physical state with our strength & endurance training routines.";
+                } else if (bmi >= 25 && bmi < 29.9) {
+                    bmiBadge.textContent = "Overweight";
+                    bmiBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase bg-orange-500/20 text-orange-400 border border-orange-500/40";
+                    bmiAdvice.textContent = "Recommended: Join our High-Intensity HIIT & Fat Burning Cardio programs.";
+                } else {
+                    bmiBadge.textContent = "Obese";
+                    bmiBadge.className = "inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase bg-red-500/20 text-red-400 border border-red-500/40";
+                    bmiAdvice.textContent = "Consult our certified personal trainers for a custom low-impact body transformation regimen.";
+                }
+            }
+        });
+
+        // Workout Program Filtering Logic
+        const filterBtns = document.querySelectorAll('.class-filter-btn');
+        const classItems = document.querySelectorAll('.class-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-gold', 'text-black');
+                    b.classList.add('glass-card', 'text-gray-300');
+                });
+                btn.classList.add('active', 'bg-gold', 'text-black');
+                btn.classList.remove('glass-card', 'text-gray-300');
+
+                const filter = btn.getAttribute('data-filter');
+
+                classItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Plan Selection Logic
+        function selectPlan(planName) {
+            const planSelect = document.getElementById('form-plan');
+            if (planSelect) {
+                planSelect.value = planName;
+            }
+            scrollToSection('contact-section');
+            showToast("Plan Selected!", `Selected: ${planName}. Fill out contact details below.`);
+        }
+
+        // Contact Form Submission Logic
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const phone = document.getElementById('form-phone').value;
+
+            showToast("Inquiry Received!", `Thank you ${name}! We will call you back at ${phone} soon.`);
+            contactForm.reset();
+        });
+
+        // Toast Notification System
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 4500);
+        }
+    </script>
+</body>
+</html>
